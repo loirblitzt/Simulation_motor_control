@@ -1,0 +1,1 @@
+//sencoder simulation of the response of the encoder
