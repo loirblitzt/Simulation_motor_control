@@ -21,27 +21,27 @@ int main(){
     int maxSubIteration=(int)(d_time/d_subtime);
 
         //position in cm
-    int * xpos = calloc(maxIteration*maxSubIteration,sizeof(int)); //position x
-    int * ypos = calloc(maxIteration*maxSubIteration,sizeof(int)); //position y
-    int * opos = calloc(maxIteration*maxSubIteration,sizeof(int)); //angle
-    xpos[0]=0;
-    ypos[0]=0;
-    opos[0]=0;
+    double  xpos = 0;
+    double  ypos = 0;
+    double  opos = 0;
 
-    double * voltage_l =calloc(maxIteration,sizeof(double)); //voltage left and right
-    double * voltage_r =calloc(maxIteration,sizeof(double));
-    voltage_l[0] =0;
-    voltage_r[0] =0;
+    double  dxpos = 0;
+    double  dypos = 0;
+    double  dopos = 0;
+
+    double  voltage_l =0;
+    double  voltage_r =0;
 
     int sum=0;
     int diff=0;
 
     int encoder_l =0 , encoder_r=0;
+    double wheel_l =0,wheel_r =0;
         //pid parameters
     PID_VALUE pid_sum;
-    InitializationPid(pid_sum,10,0.1,0.1,0.1) //no ; ? ,else goal,kp,ki,kd
-
     PID_VALUE pid_diff;
+
+    InitializationPid(pid_sum,10,0.1,0.1,0.1) //no ; ? ,else goal,kp,ki,kd
     InitializationPid(pid_diff,0,0.1,0.1,0.1) //no ; ? ,else goal,kp,ki,kd
 
     //actualisation loop
@@ -62,19 +62,17 @@ int main(){
         while(nDivided < maxSubIteration){
 
             //actualisation motors etc..
-
+            //TODO : code physics in sphysique.c/.h
+            updatePhy(&xpos,&ypos,&opos,&dxpos,&dypos,&dopos,&wheel_l,&wheel_r,voltage_l,voltage_r);
             //actualisation encoder and sensors
-
+            encoder_l = w2enco(wheel_l);
+            encoder_r = w2enco(wheel_r);
             //writing to csv
 
         }
         //actualisation encoder values , sum and diff
 
-        //writing to csv
-
     }
 
     //free memory
-    free(xpos);
-    free(ypos);
 }
